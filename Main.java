@@ -1,18 +1,19 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String otvet;
-        do {
+        Scanner vvod = new Scanner(System.in);
+        while (true){
             // Ввод данных
             System.out.println("Input:");
-            Scanner vvod = new Scanner(System.in);
             String input = vvod.nextLine();
 
             // Вывод результата
-            otvet = calc(input);
-            System.out.println("Output:\n" + otvet +"\n");
-        } while (!"throws Exception".equals(otvet));
+            if (!calc(input).equals("throws Exception")) {
+                System.out.println("Output:\n" + calc(input) + "\n");
+            } else break;
+        }
     }
     public static String calc (String input){
         // Определение знака
@@ -25,7 +26,14 @@ public class Main {
                 break;
             }
         }
-        if (znakVvoda == -1) {return "throws Exception";}
+        if (znakVvoda == -1) {
+            try {
+                throw new IOException();
+            } catch (IOException e) {
+                System.out.println("throws Exception");
+                return "throws Exception";
+            }
+        }
 
         // деление по знаку
         String[] dvaChisla = input.split(znak1[znakVvoda], 2);
@@ -36,12 +44,25 @@ public class Main {
 
         // Проверка правильности ввода
         int chisloRascheta1 = chislo1.proverka1();
-        if (chisloRascheta1 == 0) {return "throws Exception";}
         int chisloRascheta2 = chislo2.proverka1();
-        if (chisloRascheta2 == 0) {return "throws Exception";}
+        if (chisloRascheta1 == 0 || chisloRascheta2 == 0) {
+            try {
+                throw new IOException();
+            } catch (IOException e) {
+                System.out.println("throws Exception");
+                return "throws Exception";
+            }
+        }
 
         // Проверка принадлежности одному виду
-        if (chislo1.proverka2() != chislo2.proverka2()) {return "throws Exception";}
+        if (chislo1.proverka2() != chislo2.proverka2()) {
+            try {
+                throw new IOException();
+            } catch (IOException e) {
+                System.out.println("throws Exception");
+                return "throws Exception";
+            }
+        }
 
         // Вычисление
         int rezultat1 = 0;
@@ -58,7 +79,13 @@ public class Main {
         if (chislo1.proverka2() == 0) {
             if (rezultat1 > 0){
                 return rim.otvetRim();
-            } else return "throws Exception";
+            } else
+                try {
+                    throw new IOException();
+                } catch (IOException e) {
+                    System.out.println("throws Exception");
+                    return "throws Exception";
+                }
         }
 
         // Возврат результата
